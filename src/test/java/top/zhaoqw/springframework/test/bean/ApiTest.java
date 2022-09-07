@@ -16,12 +16,15 @@ public class ApiTest {
     DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
     // 2.注册 bean
     BeanDefinition beanDefinition = new BeanDefinition(UserService.class);
+    // 就是将beanDefinition放进DefaultListableBeanFactory的beanDefinitionMap
     beanFactory.registerBeanDefinition("userService", beanDefinition);
     // 3.第一次获取 bean
-    UserService userService = (UserService) beanFactory.getBean("userService");
+    /**
+     * 第一次获取 bean 调用的是AbstractBeanFactory 里面定义的getBean
+     * AbstractBeanFactory继承DefaultSingletonBeanRegistry ，会先到(Map<String, Object>) singletonObjects里面找
+     * 第一次获取设个Bean，没找到，就用
+     */
+    UserService userService = (UserService) beanFactory.getBean("userService", "zhaoqw");
     userService.queryUserInfo();
-    // 4.第二次获取 bean from Singleton
-    UserService userService_singleton = (UserService) beanFactory.getBean("userService");
-    userService_singleton.queryUserInfo();
   }
 }

@@ -6,6 +6,7 @@ import top.zhaoqw.springframework.factory.config.BeanDefinition;
 
 /**
  * 抽象类定义模板方法(AbstractBeanFactory)
+ * 继承了DefaultSingletonBeanRegistry具备了他的方法
  *
  * @author zhaoqw
  * @date 2022/08/31
@@ -17,11 +18,24 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
     if (null != bean) {
       return bean;
     }
-
     BeanDefinition beanDefinition = getBeanDefinition(name);
-    return createBean(name, beanDefinition);
+    return createBean(name, beanDefinition,null);
   }
 
+  @Override
+  public Object getBean(String name, Object... args) throws BeansException {
+    return doGetBean(name, args);
+  }
+
+  protected <T> T doGetBean(final String name, final Object[] args) throws BeansException {
+    Object bean = getSingleton(name);
+    if (bean != null) {
+      return (T) bean;
+    }
+
+    BeanDefinition beanDefinition = getBeanDefinition(name);
+    return (T) createBean(name, beanDefinition, args);
+  }
   /**
    * 获取bean定义
    *
@@ -39,5 +53,5 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
    * @return Object
    * @throws BeansException
    */
-  protected abstract Object createBean(String beanName, BeanDefinition beanDefinition) throws BeansException;
+  protected abstract Object createBean(String beanName, BeanDefinition beanDefinition, Object[] args) throws BeansException;
 }

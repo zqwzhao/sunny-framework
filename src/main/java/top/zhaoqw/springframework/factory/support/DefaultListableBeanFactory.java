@@ -7,6 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * DefaultListableBeanFactory 是AbstractBeanFactory具体的间接实现类
+ * DefaultListableBeanFactory 继承了 AbstractAutowireCapableBeanFactory 类，也
+ * 就具备了接口 BeanFactory 和 AbstractBeanFactory 等一连串的功能实现。
+ * 它实现了AbstractBeanFactory 中定义的抽象方法getBeanDefinition
  * @author zhaoqw
  * @date 2022/08/31
  */
