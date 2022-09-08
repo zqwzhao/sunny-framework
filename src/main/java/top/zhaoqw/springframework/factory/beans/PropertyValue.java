@@ -1,6 +1,8 @@
 package top.zhaoqw.springframework.factory.beans;
 
 /**
+ * 属性名称和值
+ *
  * @author zhaoqw
  * @date 2022/09/07
  */
