@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+
+  <bean id="userDao" class="top.zhaoqw.springframework.test.beanUserDao"/>
+
+  <bean id="userService" class="top.zhaoqw.springframework.test.bean.UserService">
+    <property name="name" value="zhaoqw"/>
+    <property name="userDao" ref="userDao"/>
+  </bean>
+
+</beans>
