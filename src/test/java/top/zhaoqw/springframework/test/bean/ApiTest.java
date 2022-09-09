@@ -36,5 +36,8 @@ public class ApiTest {
      */
     UserService userService = (UserService) beanFactory.getBean("userService");
     userService.queryUserInfo();
+    UserDao userDao = userService.getUserDao();
+    String name = userDao.queryUserName("10001");
+    System.out.println(name);
   }
 }
