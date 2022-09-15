@@ -1,9 +1,8 @@
-package top.zhaoqw.springframework.factory.support;
+package top.zhaoqw.springframework.factory.beans.factory.support;
 
-import top.zhaoqw.springframework.factory.BeansException;
+import top.zhaoqw.springframework.factory.beans.BeansException;
 import top.zhaoqw.springframework.factory.core.io.Resource;
 import top.zhaoqw.springframework.factory.core.io.ResourceLoader;
-import top.zhaoqw.springframework.factory.support.BeanDefinitionRegistry;
 
 /**
  * @author zhaoqw
@@ -19,4 +18,6 @@ public interface BeanDefinitionReader {
   void loadBeanDefinitions(Resource... resources) throws BeansException;
 
   void loadBeanDefinitions(String location) throws BeansException;
+
+  void loadBeanDefinitions(String... locations) throws BeansException;
 }

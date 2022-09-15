@@ -1,6 +1,6 @@
-package top.zhaoqw.springframework.factory.support;
+package top.zhaoqw.springframework.factory.beans.factory.support;
 
-import top.zhaoqw.springframework.factory.config.SingletonBeanRegistry;
+import top.zhaoqw.springframework.factory.beans.factory.config.SingletonBeanRegistry;
 
 import java.util.HashMap;
 import java.util.Map;

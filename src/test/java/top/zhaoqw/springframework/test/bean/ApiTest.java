@@ -1,12 +1,12 @@
 package top.zhaoqw.springframework.test.bean;
 
 import org.junit.Test;
-import top.zhaoqw.springframework.factory.BeansException;
+import top.zhaoqw.springframework.factory.beans.BeansException;
 import top.zhaoqw.springframework.factory.beans.PropertyValue;
 import top.zhaoqw.springframework.factory.beans.PropertyValues;
-import top.zhaoqw.springframework.factory.config.BeanDefinition;
-import top.zhaoqw.springframework.factory.config.BeanReference;
-import top.zhaoqw.springframework.factory.support.DefaultListableBeanFactory;
+import top.zhaoqw.springframework.factory.beans.factory.config.BeanDefinition;
+import top.zhaoqw.springframework.factory.beans.factory.config.BeanReference;
+import top.zhaoqw.springframework.factory.beans.factory.support.DefaultListableBeanFactory;
 
 /**
  * @author zhaoqw

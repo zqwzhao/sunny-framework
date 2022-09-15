@@ -1,4 +1,4 @@
-package top.zhaoqw.springframework.factory.support;
+package top.zhaoqw.springframework.factory.beans.factory.support;
 
 import top.zhaoqw.springframework.factory.core.io.DefaultResourceLoader;
 import top.zhaoqw.springframework.factory.core.io.ResourceLoader;

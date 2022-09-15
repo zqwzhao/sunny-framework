@@ -7,6 +7,8 @@ package top.zhaoqw.springframework.test.bean;
 public class UserService {
   public String name;
 
+  public String uId;
+
   private UserDao userDao;
 
   public UserService() {
@@ -16,8 +18,18 @@ public class UserService {
     this.name = name;
   }
 
+  public UserService(String name, String uId) {
+    this.name = name;
+    this.uId = uId;
+  }
+
   public void queryUserInfo(){
     System.out.println("查询用户信息:" + "username:" + name);
+  }
+
+
+  public String queryUserInfoByUId() {
+    return userDao.queryUserName(uId);
   }
 
   public String getName() {
@@ -34,5 +46,13 @@ public class UserService {
 
   public void setUserDao(UserDao userDao) {
     this.userDao = userDao;
+  }
+
+  public String getuId() {
+    return uId;
+  }
+
+  public void setuId(String uId) {
+    this.uId = uId;
   }
 }

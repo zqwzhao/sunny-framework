@@ -1,8 +1,8 @@
-package top.zhaoqw.springframework.factory.support;
+package top.zhaoqw.springframework.factory.beans.factory.support;
 
 import top.zhaoqw.springframework.factory.BeanFactory;
-import top.zhaoqw.springframework.factory.BeansException;
-import top.zhaoqw.springframework.factory.config.BeanDefinition;
+import top.zhaoqw.springframework.factory.beans.BeansException;
+import top.zhaoqw.springframework.factory.beans.factory.config.BeanDefinition;
 
 /**
  * 抽象类定义模板方法(AbstractBeanFactory)
@@ -25,6 +25,11 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
   @Override
   public Object getBean(String name, Object... args) throws BeansException {
     return doGetBean(name, args);
+  }
+
+  @Override
+  public <T> T getBean(String name, Class<T> requiredType) throws BeansException {
+    return (T) getBean(name);
   }
 
   protected <T> T doGetBean(final String name, final Object[] args) throws BeansException {

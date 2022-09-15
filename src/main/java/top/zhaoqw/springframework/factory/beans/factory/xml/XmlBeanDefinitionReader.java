@@ -1,14 +1,16 @@
-package top.zhaoqw.springframework.factory.support;
+package top.zhaoqw.springframework.factory.beans.factory.xml;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.XmlUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import top.zhaoqw.springframework.factory.BeansException;
+import top.zhaoqw.springframework.factory.beans.BeansException;
 import top.zhaoqw.springframework.factory.beans.PropertyValue;
-import top.zhaoqw.springframework.factory.config.BeanDefinition;
-import top.zhaoqw.springframework.factory.config.BeanReference;
+import top.zhaoqw.springframework.factory.beans.factory.config.BeanDefinition;
+import top.zhaoqw.springframework.factory.beans.factory.config.BeanReference;
+import top.zhaoqw.springframework.factory.beans.factory.support.AbstractBeanDefinitionReader;
+import top.zhaoqw.springframework.factory.beans.factory.support.BeanDefinitionRegistry;
 import top.zhaoqw.springframework.factory.core.io.Resource;
 import top.zhaoqw.springframework.factory.core.io.ResourceLoader;
 
@@ -53,6 +55,13 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
     ResourceLoader resourceLoader = getResourceLoader();
     Resource resource = resourceLoader.getResource(location);
     loadBeanDefinitions(resource);
+  }
+
+  @Override
+  public void loadBeanDefinitions(String... locations) throws BeansException {
+    for (String location : locations) {
+      loadBeanDefinitions(location);
+    }
   }
 
   protected void doLoadBeanDefinitions(InputStream inputStream) throws ClassNotFoundException, BeansException {

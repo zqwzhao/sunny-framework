@@ -1,9 +1,8 @@
-package top.zhaoqw.springframework.factory.support;
+package top.zhaoqw.springframework.factory.beans.factory.support;
 
-import com.sun.xml.internal.ws.api.ha.HaInfo;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.NoOp;
-import top.zhaoqw.springframework.factory.config.BeanDefinition;
+import top.zhaoqw.springframework.factory.beans.factory.config.BeanDefinition;
 
 import java.lang.reflect.Constructor;
 

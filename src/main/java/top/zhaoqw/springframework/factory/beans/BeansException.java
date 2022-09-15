@@ -1,4 +1,4 @@
-package top.zhaoqw.springframework.factory;
+package top.zhaoqw.springframework.factory.beans;
 
 /**
  * @author zhaoqw

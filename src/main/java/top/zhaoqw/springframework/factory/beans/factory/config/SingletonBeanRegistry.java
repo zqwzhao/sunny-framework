@@ -1,4 +1,4 @@
-package top.zhaoqw.springframework.factory.config;
+package top.zhaoqw.springframework.factory.beans.factory.config;
 
 /**
  * 单例注册接口定义
