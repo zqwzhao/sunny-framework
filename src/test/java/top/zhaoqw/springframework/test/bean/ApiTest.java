@@ -1,6 +1,6 @@
 package top.zhaoqw.springframework.test.bean;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import top.zhaoqw.springframework.factory.beans.BeansException;
 import top.zhaoqw.springframework.factory.beans.PropertyValue;
 import top.zhaoqw.springframework.factory.beans.PropertyValues;

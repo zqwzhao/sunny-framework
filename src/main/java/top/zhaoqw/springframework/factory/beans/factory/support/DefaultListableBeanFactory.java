@@ -75,4 +75,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
   public String[] getBeanDefinitionNames() {
     return beanDefinitionMap.keySet().toArray(new String[0]);
   }
+
+  @Override
+  protected BeanPostProcessor[] getBeanPostProcessors() {
+    return new BeanPostProcessor[0];
+  }
 }

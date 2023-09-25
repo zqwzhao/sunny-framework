@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+    <property scope="local" name="PROCESS_NAME" value="spark-auth"/>
+    <appender name="mySyslogAppender" class="com.papertrailapp.logback.Syslog4jAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level ${PROCESS_NAME}[${PID:- }] [%thread] %logger{50} - %msg%n</pattern>
+        </layout>
+        <syslogConfig class="org.productivity.java.syslog4j.impl.unix.socket.UnixSocketSyslogConfig">
+            <ident>${PROCESS_NAME}</ident>
+            <facility>daemon</facility>
+            <maxMessageLength>102400</maxMessageLength>
+        </syslogConfig>
+    </appender>
+    <logger name="org.springframework" level="OFF"> </logger>
+    <!-- 日志输出级别 -->
+    <root level="INFO">
+        <appender-ref ref="mySyslogAppender" />
+    </root>
+</configuration>

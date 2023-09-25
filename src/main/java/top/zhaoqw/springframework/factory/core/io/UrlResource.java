@@ -1,8 +1,6 @@
 package top.zhaoqw.springframework.factory.core.io;
 
 import cn.hutool.core.lang.Assert;
-import javafx.scene.control.Alert;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
