@@ -33,6 +33,15 @@ public class PropertyResolver {
         return this.properties.get(key);
     }
 
+    @Nullable
+    public <T> T getProperty(String key, Class<T> targetType) {
+        String value = getProperty(key);
+        if (value == null) {
+            return null;
+        }
+        // 转换为指定类型:
+        return convert(targetType, value);
+    }
 
     PropertyExpr parsePropertyExpr(String key) {
         if (key.startsWith("${") && key.endsWith("}")) {
@@ -49,6 +58,15 @@ public class PropertyResolver {
             }
         }
         return null;
+    }
+
+    // 转换到指定Class类型:
+    <T> T convert(Class<?> clazz, String value) {
+        Function<String, Object> fn = this.converters.get(clazz);
+        if (fn == null) {
+            throw new IllegalArgumentException("Unsupported value type: " + clazz.getName());
+        }
+        return (T) fn.apply(value);
     }
 
 }
