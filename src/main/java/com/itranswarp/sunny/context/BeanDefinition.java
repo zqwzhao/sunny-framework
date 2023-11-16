@@ -68,6 +68,7 @@ public class BeanDefinition implements Comparable<BeanDefinition> {
         factoryMethod.setAccessible(true);
         setInitAndDestroyMethod(initMethodName, destroyMethodName, initMethod, destroyMethod);
     }
+
     private void setInitAndDestroyMethod(String initMethodName,
                                          String destroyMethodName,
                                          Method initMethod, Method destroyMethod) {
