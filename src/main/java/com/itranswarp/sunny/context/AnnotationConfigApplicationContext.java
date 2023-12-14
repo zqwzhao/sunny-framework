@@ -305,7 +305,7 @@ public class AnnotationConfigApplicationContext {
             return defs.get(0);
         }
         List<BeanDefinition> primaryDefs = defs.stream()
-                .filter(def -> def.isPrimary()).collect(Collectors.toList());
+                .filter(BeanDefinition::isPrimary).toList();
         if (primaryDefs.size() == 1) {
             return primaryDefs.get(0);
         }
