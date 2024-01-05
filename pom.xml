@@ -19,7 +19,7 @@
   <developers>
     <developer>
       <id>sunny-framework</id>
-      <name>zqw</name>
+      <name>zhaoqw</name>
       <email>8611431654@qq.com</email>
     </developer>
   </developers>
@@ -75,6 +75,12 @@
       <groupId>cglib</groupId>
       <artifactId>cglib</artifactId>
       <version>3.3.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy</artifactId>
+      <version>1.12.23</version>
     </dependency>
   </dependencies>
 

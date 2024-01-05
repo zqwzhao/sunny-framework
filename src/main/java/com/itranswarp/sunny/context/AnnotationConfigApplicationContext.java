@@ -33,7 +33,9 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -52,6 +54,7 @@ public class AnnotationConfigApplicationContext {
 
     protected final Map<String, BeanDefinition> beans;
 
+    private List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
     private Set<String> creatingBeanNames;
 
     
@@ -72,6 +75,17 @@ public class AnnotationConfigApplicationContext {
                     createBeanAsEarlySingleton(def);
                     return def.getName();
                 }).collect(Collectors.toList());
+        // 创建BeanPostProcessor类型的Bean:
+        List<BeanPostProcessor> processors = this.beans.values().stream()
+                // 过滤出BeanPostProcessor:
+                .filter(this::isBeanPostProcessorDefinition)
+                // 排序:
+                .sorted()
+                // 创建BeanPostProcessor实例:
+                .map(def -> {
+                    return (BeanPostProcessor) createBeanAsEarlySingleton(def);
+                }).collect(Collectors.toList());
+        this.beanPostProcessors.addAll(processors);
 
         // 创建其他普通Bean:
         createNormalBeans();
@@ -89,6 +103,8 @@ public class AnnotationConfigApplicationContext {
         this.beans.values().forEach(this::initBean);
     }
 
+
+
     private void createNormalBeans() {
         // 获取BeanDefinition列表:
         List<BeanDefinition> defs = this.beans.values().stream()
@@ -102,6 +118,10 @@ public class AnnotationConfigApplicationContext {
                 createBeanAsEarlySingleton(def);
             }
         });
+    }
+
+    private boolean isBeanPostProcessorDefinition(BeanDefinition beanDefinition) {
+        return BeanPostProcessor.class.isAssignableFrom(beanDefinition.getBeanClass());
     }
 
     /**
@@ -200,6 +220,16 @@ public class AnnotationConfigApplicationContext {
             }
         }
         def.setInstance(instance);
+
+        // 调用BeanPostProcessor处理Bean:
+        for (BeanPostProcessor processor : beanPostProcessors) {
+            Object processed = processor.postProcessBeforeInitialization(def.getInstance(), def.getName());
+            // 如果一个BeanPostProcessor替换了原始Bean，则更新Bean的引用:
+            if (def.getInstance() != processed) {
+                def.setInstance(processed);
+            }
+        }
+
         return def.getInstance();
     }
 
@@ -313,11 +343,27 @@ public class AnnotationConfigApplicationContext {
      * 注入依赖但不调用init方法
      */
     void injectBean(BeanDefinition def) {
+        // 获取Bean实例，或被代理的原始实例:
+        Object beanInstance = getProxiedInstance(def);
         try {
             injectProperties(def, def.getBeanClass(), def.getInstance());
         } catch (ReflectiveOperationException e) {
             throw new BeanCreationException(e);
         }
+    }
+
+    Object getProxiedInstance(BeanDefinition def) {
+        Object beanInstance = def.getInstance();
+        // 如果Proxy改变了原始Bean，又希望注入到原始Bean，则由BeanPostProcessor指定原始Bean:
+        List<BeanPostProcessor> reversedBeanPostProcessors = new ArrayList<>(this.beanPostProcessors);
+        Collections.reverse(reversedBeanPostProcessors);
+        for (BeanPostProcessor beanPostProcessor : reversedBeanPostProcessors) {
+            Object restoredInstance = beanPostProcessor.postProcessOnSetProperty(beanInstance, def.getName());
+            if (restoredInstance != beanInstance) {
+                beanInstance = restoredInstance;
+            }
+        }
+        return beanInstance;
     }
 
     /**
