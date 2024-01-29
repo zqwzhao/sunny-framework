@@ -346,7 +346,7 @@ public class AnnotationConfigApplicationContext {
         // 获取Bean实例，或被代理的原始实例:
         Object beanInstance = getProxiedInstance(def);
         try {
-            injectProperties(def, def.getBeanClass(), def.getInstance());
+            injectProperties(def, def.getBeanClass(), beanInstance);
         } catch (ReflectiveOperationException e) {
             throw new BeanCreationException(e);
         }
