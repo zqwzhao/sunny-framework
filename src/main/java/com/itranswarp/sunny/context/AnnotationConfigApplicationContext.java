@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
  * @author zhaoqw
  * @date 2023/11/10
  */
-public class AnnotationConfigApplicationContext {
+public class AnnotationConfigApplicationContext implements ConfigurableApplicationContext {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     protected final PropertyResolver propertyResolver;
@@ -104,7 +104,9 @@ public class AnnotationConfigApplicationContext {
     }
 
 
-
+    /**
+     * 创建普通Bean
+     */
     private void createNormalBeans() {
         // 获取BeanDefinition列表:
         List<BeanDefinition> defs = this.beans.values().stream()
@@ -120,7 +122,7 @@ public class AnnotationConfigApplicationContext {
         });
     }
 
-    private boolean isBeanPostProcessorDefinition(BeanDefinition beanDefinition) {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            private boolean isBeanPostProcessorDefinition(BeanDefinition beanDefinition) {
         return BeanPostProcessor.class.isAssignableFrom(beanDefinition.getBeanClass());
     }
 
@@ -131,7 +133,8 @@ public class AnnotationConfigApplicationContext {
      * @param def BeanDefinition
      * @return Bean
      */
-    private Object  createBeanAsEarlySingleton(BeanDefinition def) {
+    @Override
+    public Object  createBeanAsEarlySingleton(BeanDefinition def) {
         logger.atDebug().log("Try create bean '{}' as early singleton: {}", def.getName(), def.getBeanClass().getName());
         if (!this.creatingBeanNames.add(def.getName())) {
             throw new UnsatisfiedDependencyException(String.format("Circular dependency detected when create bean '%s'", def.getName()));
@@ -356,7 +359,7 @@ public class AnnotationConfigApplicationContext {
         Object beanInstance = def.getInstance();
         // 如果Proxy改变了原始Bean，又希望注入到原始Bean，则由BeanPostProcessor指定原始Bean:
         List<BeanPostProcessor> reversedBeanPostProcessors = new ArrayList<>(this.beanPostProcessors);
-        Collections.reverse(reversedBeanPostProcessors);
+            Collections.reverse(reversedBeanPostProcessors);
         for (BeanPostProcessor beanPostProcessor : reversedBeanPostProcessors) {
             Object restoredInstance = beanPostProcessor.postProcessOnSetProperty(beanInstance, def.getName());
             if (restoredInstance != beanInstance) {
@@ -604,6 +607,7 @@ public class AnnotationConfigApplicationContext {
      * 根据Name查找BeanDefinition，如果Name不存在，返回null
      */
     @Nullable
+    @Override
     public BeanDefinition findBeanDefinition(String name) {
         return this.beans.get(name);
     }
@@ -613,6 +617,7 @@ public class AnnotationConfigApplicationContext {
      *  根据Name和Type查找BeanDefinition，如果Name不存在，返回null，如果Name存在，但Type不匹配，抛出异常。
      */
     @Nullable
+    @Override
     public BeanDefinition findBeanDefinition(String name, Class<?> requiredType) {
         BeanDefinition def = findBeanDefinition(name);
         if (def == null) {
@@ -630,6 +635,7 @@ public class AnnotationConfigApplicationContext {
     /**
      * 根据Type查找若干个BeanDefinition，返回0个或多个。
      */
+    @Override
     public List<BeanDefinition> findBeanDefinitions(Class<?> type) {
         return this.beans.values().stream()
                 // filter by type and sub-type:
@@ -642,6 +648,7 @@ public class AnnotationConfigApplicationContext {
      * 根据Type查找某个BeanDefinition，如果不存在返回null，如果存在多个返回@Primary标注的一个，
      * 如果有多个@Primary标注，或没有@Primary标注但找到多个，均抛出NoUniqueBeanDefinitionException
      */
+    @Override
     public BeanDefinition findBeanDefinition(Class<?> type) {
         List<BeanDefinition> defs = findBeanDefinitions(type);
         if (defs.isEmpty()) {
@@ -672,6 +679,35 @@ public class AnnotationConfigApplicationContext {
             throw new NoSuchBeanDefinitionException(String.format("No bean defined with type '%s'.", requiredType));
         }
         return (T) def.getRequiredInstance();
+    }
+
+
+    /**
+     * 通过Type查找Beans
+     */
+    @Override
+    public <T> List<T> getBeans(Class<T> requiredType) {
+        List<BeanDefinition> defs = findBeanDefinitions(requiredType);
+        if (defs.isEmpty()) {
+            return List.of();
+        }
+        List<T> list = new ArrayList<>(defs.size());
+        for (var def : defs) {
+            list.add((T) def.getRequiredInstance());
+        }
+        return list;
+    }
+
+    @Override
+    public void close() {
+        logger.info("Closing {}...", this.getClass().getName());
+        this.beans.values().forEach(def -> {
+            final Object beanInstance = getProxiedInstance(def);
+            callMethod(beanInstance, def.getDestroyMethod(), def.getDestroyMethodName());
+        });
+        this.beans.clear();
+        logger.info("{} closed.", this.getClass().getName());
+        ApplicationContextUtils.setApplicationContext(null);
     }
 
     /**

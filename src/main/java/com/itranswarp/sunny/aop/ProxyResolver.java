@@ -15,6 +15,27 @@ public class ProxyResolver {
     // ByteBuddy实例:
     ByteBuddy byteBuddy = new ByteBuddy();
 
+
+    private static ProxyResolver INSTANCE = null;
+
+    /**
+     * 双重检查单例
+     *
+     * @return
+     */
+    public static ProxyResolver getInstance() {
+        if (INSTANCE != null)  return INSTANCE;
+        synchronized (ProxyResolver.class) {
+            if (INSTANCE == null) {
+                INSTANCE = new ProxyResolver();
+            }
+        }
+        return INSTANCE;
+    }
+
+    private ProxyResolver() {
+    }
+
     // 传入原始Bean、拦截器，返回代理后的实例:
     public <T> T createProxy(T bean, InvocationHandler handler) {
         // 目标Bean的Class类型:

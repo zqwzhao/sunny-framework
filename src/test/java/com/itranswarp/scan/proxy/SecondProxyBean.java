@@ -2,7 +2,27 @@ package com.itranswarp.scan.proxy;
 
 /**
  * @author zhaoqw
- * @date 2023/9/25
+ * @date 2024/3/7
  */
 public class SecondProxyBean extends OriginBean {
+    final OriginBean target;
+
+    public SecondProxyBean(OriginBean target) {
+        this.target = target;
+    }
+
+    @Override
+    public void setVersion(String version) {
+        target.setVersion(version);
+    }
+
+    @Override
+    public String getName() {
+        return target.getName();
+    }
+
+    @Override
+    public String getVersion() {
+        return target.getVersion();
+    }
 }
