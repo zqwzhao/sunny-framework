@@ -18,7 +18,7 @@ import java.util.Map;
  * @author zhaoqw
  * @date 2024/3/7
  */
-public class AnnotationProxyBeanPostProcessor<A extends Annotation> implements BeanPostProcessor {
+public abstract class AnnotationProxyBeanPostProcessor<A extends Annotation> implements BeanPostProcessor {
     Map<String, Object> originBeans = new HashMap<>();
     Class<A> annotationClass;
 

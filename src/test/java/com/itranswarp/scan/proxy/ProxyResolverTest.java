@@ -1,6 +1,5 @@
 package com.itranswarp.scan.proxy;
 
-import com.itranswarp.aop.PoliteInvocationHandler;
 import com.itranswarp.scan.ScanApplication;
 import com.itranswarp.sunny.aop.ProxyResolver;
 import com.itranswarp.sunny.context.AnnotationConfigApplicationContext;

@@ -1,6 +1,6 @@
 package com.itranswarp.scan.proxy;
 
-import com.itranswarp.aop.Polite;
+import com.itranswarp.aop.around.Polite;
 import com.itranswarp.sunny.annotation.Around;
 import com.itranswarp.sunny.annotation.Component;
 import com.itranswarp.sunny.annotation.Value;

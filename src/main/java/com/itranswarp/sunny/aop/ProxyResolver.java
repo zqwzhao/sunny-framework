@@ -14,8 +14,6 @@ import java.lang.reflect.Method;
 public class ProxyResolver {
     // ByteBuddy实例:
     ByteBuddy byteBuddy = new ByteBuddy();
-
-
     private static ProxyResolver INSTANCE = null;
 
     /**
