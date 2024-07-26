@@ -5,10 +5,10 @@ app:
 # standard structure for datasource, mail, etc:
 summer:
   datasource:
-    url: jdbc:hsqldb:file:testdb.tmp
-    username: sa
-    password:
-    auto-commit: ${AUTO_COMMIT:false}
+    url: jdbc:postgresql://127.0.0.1:5432/skms
+    username: postgres
+    password: 159357
+    driver-class-name: org.postgresql.Driver
 
 # test data types:
 other:

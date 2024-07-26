@@ -16,11 +16,13 @@ import java.util.List;
  * @date 2024/3/20
  */
 public class JdbcTemplate {
+
     final DataSource dataSource;
 
     public JdbcTemplate(DataSource dataSource) {
         this.dataSource = dataSource;
     }
+
     public Number queryForNumber(String sql, Object... args) throws DataAccessException {
         return queryForObject(sql, NumberRowMapper.instance, args);
     }
@@ -59,7 +61,6 @@ public class JdbcTemplate {
                     return t;
                 });
     }
-
 
     public <T> List<T> queryForList(String sql, Class<T> clazz, Object... args) throws DataAccessException {
         return queryForList(sql, new BeanRowMapper<>(clazz), args);
@@ -104,6 +105,7 @@ public class JdbcTemplate {
                     throw new DataAccessException("Should not reach here.");
                 });
     }
+
     public int update(String sql, Object... args) throws DataAccessException {
         return execute(preparedStatementCreator(sql, args),
                 // PreparedStatementCallback
@@ -151,7 +153,6 @@ public class JdbcTemplate {
         }
     }
 }
-
 
 class StringRowMapper implements RowMapper<String> {
 
