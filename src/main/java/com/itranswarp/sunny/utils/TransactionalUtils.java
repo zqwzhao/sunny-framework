@@ -11,9 +11,9 @@ import java.sql.Connection;
  * @date 2024/6/26
  */
 public class TransactionalUtils {
-//    @Nullable
-//    public static Connection getCurrentConnection() {
-//        TransactionStatus ts = DataSourceTransactionManager.get();
-//        return ts == null ? null : ts.connection;
-//    }
+    @Nullable
+    public static Connection getCurrentConnection() {
+        TransactionStatus ts = DataSourceTransactionManager.transactionStatus.get();
+        return ts == null ? null : ts.connection;
+    }
 }

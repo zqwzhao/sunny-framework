@@ -1,26 +1,21 @@
 package com.itranswarp.jdbc.without.tx;
 
-import static com.itranswarp.jdbc.JdbcTestBase.CREATE_ADDRESS;
-import static com.itranswarp.jdbc.JdbcTestBase.CREATE_USER;
-import static com.itranswarp.jdbc.JdbcTestBase.DELETE_USER;
-import static com.itranswarp.jdbc.JdbcTestBase.INSERT_USER;
-import static com.itranswarp.jdbc.JdbcTestBase.SELECT_USER;
-import static com.itranswarp.jdbc.JdbcTestBase.SELECT_USER_AGE;
-import static com.itranswarp.jdbc.JdbcTestBase.SELECT_USER_NAME;
-import static com.itranswarp.jdbc.JdbcTestBase.UPDATE_USER;
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.itranswarp.jdbc.JdbcTestBase;
 import com.itranswarp.sunny.context.AnnotationConfigApplicationContext;
-import com.itranswarp.sunny.jdbc.exception.DataAccessException;
 import com.itranswarp.sunny.jdbc.exception.TransactionException;
 import com.itranswarp.sunny.jdbc.jdbc.JdbcTemplate;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class JdbcWithoutTxTest extends JdbcTestBase {
+
+public class JdbcWithTxTest extends JdbcTestBase {
 
     @Test
     public void testJdbcWithTx() {

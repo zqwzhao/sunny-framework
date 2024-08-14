@@ -1,8 +1,5 @@
 package com.itranswarp.sunny.jdbc.jdbc;
 
-import com.itranswarp.sunny.jdbc.exception.DataAccessException;
-
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,10 +8,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author zhaoqw
- * @date 2024/3/20
- */
+import javax.sql.DataSource;
+
+
+import com.itranswarp.sunny.jdbc.exception.DataAccessException;
+import com.itranswarp.sunny.utils.TransactionalUtils;
+
 public class JdbcTemplate {
 
     final DataSource dataSource;
@@ -123,6 +122,15 @@ public class JdbcTemplate {
     }
 
     public <T> T execute(ConnectionCallback<T> action) throws DataAccessException {
+        // 尝试获取当前事务连接:
+        Connection current = TransactionalUtils.getCurrentConnection();
+        if (current != null) {
+            try {
+                return action.doInConnection(current);
+            } catch (SQLException e) {
+                throw new DataAccessException(e);
+            }
+        }
         // 获取新连接:
         try (Connection newConn = dataSource.getConnection()) {
             final boolean autoCommit = newConn.getAutoCommit();

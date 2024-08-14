@@ -7,7 +7,7 @@ import java.sql.Connection;
  * @date 2024/6/25
  */
 public class TransactionStatus {
-    final Connection connection;
+    public final Connection connection;
 
     public TransactionStatus(Connection connection) {
         this.connection = connection;

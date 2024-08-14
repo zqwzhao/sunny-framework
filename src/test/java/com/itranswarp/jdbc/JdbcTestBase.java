@@ -35,7 +35,7 @@ public class JdbcTestBase {
 
     public PropertyResolver createPropertyResolver() {
         var ps = new Properties();
-        ps.put("summer.datasource.url", "jdbc:postgresql://127.0.0.1:5432/hero_story");
+        ps.put("summer.datasource.url", "jdbc:postgresql://127.0.0.1:5432/postgres");
         ps.put("summer.datasource.username", "postgres");
         ps.put("summer.datasource.password", "159357");
         ps.put("summer.datasource.driver-class-name", "org.postgresql.Driver");
